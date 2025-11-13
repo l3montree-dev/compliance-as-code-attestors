@@ -21,7 +21,7 @@ func FetchGithubCICDEnvironment(argument string) {
 
 func AllRepositoryRequests(input tempInput) {
 
-	url := "https://api.github.com/repos/" + input.repositories[1] + "/issues?state=all"
+	url := "https://api.github.com/repos/" + input.repositories[0] + "/issues?state=all"
 	resp, err := http.Get(url)
 	fmt.Println(resp)
 	if err != nil {
@@ -32,11 +32,11 @@ func AllRepositoryRequests(input tempInput) {
 
 func main() {
 	exampleInput := tempInput{
-		repositories:   []string{"test", "test2"},
-		initRepoNumber: 2,
-		initRepoTitle:  "idk",
+		repositories:   []string{"l3montree-dev/devguard-web", "l3montree-dev/devguard-web"},
+		initRepoNumber: 581,
+		initRepoTitle:  "1277 organization wide dependency search",
 	}
-	FetchGithubCICDEnvironment("https://api.github.com/repos/l3montree-dev/devguard-web/pulls/581")
+	// FetchGithubCICDEnvironment("https://api.github.com/repos/l3montree-dev/devguard-web/pulls/581")
 	AllRepositoryRequests(exampleInput)
 }
 
