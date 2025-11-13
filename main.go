@@ -2,31 +2,43 @@ package main
 
 import (
 	"fmt"
-	"io"
-	"log"
 	"net/http"
 )
 
-func FetchGithubCICDEnvironment() error {
-	const url = "https://api.github.com/repos/l3montree-dev/devguard-web/pulls/581"
+type tempInput struct {
+	repositories   []string // input the repositories you want additionally witness
+	initRepoNumber int      // entrypoint argument given by ci-cd pipeline
+	initRepoTitle  string   // entrypoint argument given by ci-cd pipeline
+}
 
+func FetchGithubCICDEnvironment(argument string) {
+	resp, err := http.Get(argument)
+	fmt.Println(resp)
+	if err != nil {
+		fmt.Println("Kaboom")
+	}
+}
+
+func AllRepositoryRequests(input tempInput) {
+
+	url := "https://api.github.com/repos/" + input.repositories[1] + "/issues?state=all"
 	resp, err := http.Get(url)
+	fmt.Println(resp)
 	if err != nil {
-		return fmt.Errorf("request failed: %w", err)
-	}
-	defer resp.Body.Close()
-
-	body, err := io.ReadAll(resp.Body)
-	if err != nil {
-		return fmt.Errorf("read body failed: %w", err)
+		fmt.Println("Kaboom")
 	}
 
-	fmt.Printf("GET %s\nStatus: %s\n\n%s\n", url, resp.Status, body)
-	return nil
 }
 
 func main() {
-	if err := FetchGithubCICDEnvironment(); err != nil {
-		log.Fatal(err)
+	exampleInput := tempInput{
+		repositories:   []string{"test", "test2"},
+		initRepoNumber: 2,
+		initRepoTitle:  "idk",
 	}
+	FetchGithubCICDEnvironment("https://api.github.com/repos/l3montree-dev/devguard-web/pulls/581")
+	AllRepositoryRequests(exampleInput)
 }
+
+// curl -s https://api.github.com/repos/l3montree-dev/devguard-web/pulls/581
+// curl https://api.github.com/repos/l3montree-dev/devguard-documentation/issues?state=all
