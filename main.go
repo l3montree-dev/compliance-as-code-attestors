@@ -57,8 +57,21 @@ func AllRepositoryPRrequests(input tempInput) ([]issueSummary, error) {
 	return summaries, nil
 }
 
-func SpecificPullRequest(input tempInput) {
+func AssociatedPullRequest(exampleInput tempInput) {
 
+	summaries, err := AllRepositoryPRrequests(exampleInput)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	for _, s := range summaries {
+
+		// fmt.Printf("general : %s %d: %s\n", s.Repository, s.Number, s.Title)
+
+		if s.Title == exampleInput.initRepoTitle {
+			fmt.Printf("output : %s %d: %s\n", s.Repository, s.Number, s.Title)
+		}
+	}
 }
 
 func main() {
@@ -67,14 +80,7 @@ func main() {
 		initRepoNumber: 581,
 		initRepoTitle:  "1277 organization wide dependency search",
 	}
-	summaries, err := AllRepositoryPRrequests(exampleInput)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	for _, s := range summaries {
-		fmt.Printf("%s %d: %s\n", s.Repository, s.Number, s.Title)
-	}
+	AssociatedPullRequest(exampleInput)
 
 }
 
