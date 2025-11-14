@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
+	"log"
 	"net/http"
 )
 
@@ -13,29 +14,47 @@ type tempInput struct {
 	initRepoTitle  string   // entrypoint argument given by ci-cd pipeline
 }
 
-func AllRepositoryRequests(input tempInput) []byte {
-	var results []string
-	var jsonObject []byte
+type issueSummary struct {
+	Repository string `json:"repository"`
+	Number     int    `json:"number"`
+	Title      string `json:"title"`
+}
 
-	for index, _ := range input.repositories {
-		url := "https://api.github.com/repos/" + input.repositories[index] + "/issues?state=all"
+var repoIssues []struct {
+	Number int    `json:"number"`
+	Title  string `json:"title"`
+}
+
+func AllRepositoryPRrequests(input tempInput) ([]issueSummary, error) {
+	var summaries []issueSummary
+
+	for _, repo := range input.repositories {
+		url := "https://api.github.com/repos/" + repo + "/issues?state=all"
 		resp, err := http.Get(url)
-
 		if err != nil {
 			fmt.Printf("whoops")
 		}
 
-		defer resp.Body.Close()
 		body, err := io.ReadAll(resp.Body)
 
 		if err != nil {
 			fmt.Println("Kaboom")
 		}
-		results = append(results, string(body))
-		jsonObject, _ = json.Marshal(results)
+
+		if err := json.Unmarshal(body, &repoIssues); err != nil {
+			return nil, fmt.Errorf("Kaboom")
+		}
+
+		for _, issue := range repoIssues {
+			summaries = append(summaries, issueSummary{
+				Repository: repo,
+				Number:     issue.Number,
+				Title:      issue.Title,
+			})
+		}
 
 	}
-	return jsonObject
+	return summaries, nil
 }
 
 func SpecificPullRequest(input tempInput) {
@@ -48,8 +67,15 @@ func main() {
 		initRepoNumber: 581,
 		initRepoTitle:  "1277 organization wide dependency search",
 	}
+	summaries, err := AllRepositoryPRrequests(exampleInput)
+	if err != nil {
+		log.Fatal(err)
+	}
 
-	fmt.Printf("%s", AllRepositoryRequests(exampleInput))
+	for _, s := range summaries {
+		fmt.Printf("%s %d: %s\n", s.Repository, s.Number, s.Title)
+	}
+
 }
 
 // curl -s https://api.github.com/repos/l3montree-dev/devguard-web/pulls/581
