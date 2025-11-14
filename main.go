@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"io"
 	"net/http"
@@ -12,7 +13,9 @@ type tempInput struct {
 	initRepoTitle  string   // entrypoint argument given by ci-cd pipeline
 }
 
-func AllRepositoryRequests(input tempInput) {
+func AllRepositoryRequests(input tempInput) []byte {
+	var results []string
+	var jsonObject []byte
 
 	for index, _ := range input.repositories {
 		url := "https://api.github.com/repos/" + input.repositories[index] + "/issues?state=all"
@@ -25,12 +28,17 @@ func AllRepositoryRequests(input tempInput) {
 		defer resp.Body.Close()
 		body, err := io.ReadAll(resp.Body)
 
-		fmt.Printf("%s", body)
 		if err != nil {
 			fmt.Println("Kaboom")
 		}
+		results = append(results, string(body))
+		jsonObject, _ = json.Marshal(results)
 
 	}
+	return jsonObject
+}
+
+func SpecificPullRequest(input tempInput) {
 
 }
 
@@ -41,5 +49,8 @@ func main() {
 		initRepoTitle:  "1277 organization wide dependency search",
 	}
 
-	AllRepositoryRequests(exampleInput)
+	fmt.Printf("%s", AllRepositoryRequests(exampleInput))
 }
+
+// curl -s https://api.github.com/repos/l3montree-dev/devguard-web/pulls/581
+// curl https://api.github.com/repos/l3montree-dev/devguard-documentation/issues?state=all
