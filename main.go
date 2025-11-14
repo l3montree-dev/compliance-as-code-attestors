@@ -6,6 +6,7 @@ import (
 	"io"
 	"log"
 	"net/http"
+	"strconv"
 )
 
 type tempInput struct {
@@ -70,8 +71,27 @@ func AssociatedPullRequest(exampleInput tempInput) {
 
 		if s.Title == exampleInput.initRepoTitle {
 			fmt.Printf("output : %s %d: %s\n", s.Repository, s.Number, s.Title)
+
+			url := "https://api.github.com/repos/" + s.Repository + "/pulls/" + strconv.Itoa(s.Number)
+
+			resp, err := http.Get(url)
+			if err != nil {
+				fmt.Printf("whoops")
+			}
+
+			body, err := io.ReadAll(resp.Body)
+
+			if err != nil {
+				fmt.Println("Kaboom")
+			}
+			fmt.Printf("%s", body)
 		}
+
+		// if err := json.Unmarshal(body, &repoIssues); err != nil {
+		// 	return nil, fmt.Errorf("Kaboom")
+		// }
 	}
+
 }
 
 func main() {
