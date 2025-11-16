@@ -1,6 +1,5 @@
 /*
 Copyright © 2025 NAME HERE <EMAIL ADDRESS>
-
 */
 package cmd
 
@@ -9,6 +8,10 @@ import (
 
 	"github.com/spf13/cobra"
 )
+
+var repoNumber int
+var repos []string
+var bar string
 
 // helloCmd represents the hello command
 var helloCmd = &cobra.Command{
@@ -22,6 +25,12 @@ This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Println("hello called")
+		fooVal, err := cmd.Flags().GetString("foo")
+		if err != nil {
+			fmt.Print("Error")
+			return
+		}
+		fmt.Printf(fooVal)
 	},
 }
 
@@ -32,7 +41,7 @@ func init() {
 
 	// Cobra supports Persistent Flags which will work for this command
 	// and all subcommands, e.g.:
-	// helloCmd.PersistentFlags().String("foo", "", "A help for foo")
+	helloCmd.Flags().String("foo", "basssr", "A help for foo")
 
 	// Cobra supports local flags which will only run when this command
 	// is called directly, e.g.:
