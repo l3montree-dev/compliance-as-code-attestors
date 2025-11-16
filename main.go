@@ -21,6 +21,13 @@ type issueSummary struct {
 	Title      string `json:"title"`
 }
 
+type combinedOutput struct {
+	Repository  string          `json:"repository"`
+	IssueNumber int             `json:"issue_number"`
+	IssueTitle  string          `json:"issue_title"`
+	PullRequest json.RawMessage `json:"pull_request"`
+}
+
 var repoIssues []struct {
 	Number int    `json:"number"`
 	Title  string `json:"title"`
@@ -70,7 +77,7 @@ func AssociatedPullRequest(exampleInput tempInput) {
 		// fmt.Printf("general : %s %d: %s\n", s.Repository, s.Number, s.Title)
 
 		if s.Title == exampleInput.initRepoTitle {
-			fmt.Printf("output : %s %d: %s\n", s.Repository, s.Number, s.Title)
+			// fmt.Printf("output : %s %d: %s\n", s.Repository, s.Number, s.Title)
 
 			url := "https://api.github.com/repos/" + s.Repository + "/pulls/" + strconv.Itoa(s.Number)
 
@@ -80,11 +87,26 @@ func AssociatedPullRequest(exampleInput tempInput) {
 			}
 
 			body, err := io.ReadAll(resp.Body)
+			resp.Body.Close()
 
 			if err != nil {
 				fmt.Println("Kaboom")
 			}
-			fmt.Printf("%s", body)
+
+			output := combinedOutput{
+				Repository:  s.Repository,
+				IssueNumber: s.Number,
+				IssueTitle:  s.Title,
+				PullRequest: body,
+			}
+
+			finalJSON, err := json.MarshalIndent(output, "", "  ")
+			if err != nil {
+				log.Printf("failed to marshal response: %v", err)
+				continue
+			}
+
+			fmt.Printf("%s\n", finalJSON)
 		}
 
 		// if err := json.Unmarshal(body, &repoIssues); err != nil {
@@ -96,12 +118,11 @@ func AssociatedPullRequest(exampleInput tempInput) {
 
 func main() {
 	exampleInput := tempInput{
-		repositories:   []string{"l3montree-dev/devguard-web", "l3montree-dev/devguard-documentation"},
+		repositories:   []string{"l3montree-dev/devguard", "l3montree-dev/devguard-web", "l3montree-dev/devguard-documentation"},
 		initRepoNumber: 581,
 		initRepoTitle:  "1277 organization wide dependency search",
 	}
 	AssociatedPullRequest(exampleInput)
-
 }
 
 // curl -s https://api.github.com/repos/l3montree-dev/devguard-web/pulls/581
