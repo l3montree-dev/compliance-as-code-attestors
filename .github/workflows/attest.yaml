@@ -1,0 +1,21 @@
+name: Attestor Workflow
+
+on:
+  push
+ 
+
+env:
+  PR_NUMBER: ${{ github.event.number }}
+  PR_TITLE: ${{ github.event.pull_request.title }}
+
+jobs:
+  build: 
+    runs-on: ubuntu-latest
+    steps:
+    - name: Calling Env variables
+      env:
+        PR_NUMBER: ${{ github.event.number }}
+        PR_TITLE: ${{ github.event.pull_request.title }}
+      run: echo $PR_NUMBER && echo $PR_TITLE
+  
+
