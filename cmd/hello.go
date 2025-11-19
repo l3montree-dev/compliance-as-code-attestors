@@ -1,6 +1,3 @@
-/*
-Copyright © 2025 NAME HERE <EMAIL ADDRESS>
-*/
 package cmd
 
 import (
@@ -42,7 +39,6 @@ func init() {
 	// Cobra supports Persistent Flags which will work for this command
 	// and all subcommands, e.g.:
 	helloCmd.Flags().String("foo", "basssr", "A help for foo")
-
 	// Cobra supports local flags which will only run when this command
 	// is called directly, e.g.:
 	// helloCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")

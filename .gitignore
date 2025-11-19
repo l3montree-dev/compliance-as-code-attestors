@@ -30,6 +30,7 @@ go.work.sum
 # json file
 *.json
 
+main
 # Editor/IDE
 # .idea/
 # .vscode/
