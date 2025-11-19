@@ -1,0 +1,10 @@
+name: Attestor Workflow
+
+on:
+  push:
+ 
+jobs:
+  attestor:
+  run:
+    - echo "This job tests something, but takes more time than test-job1."
+
