@@ -11,6 +11,8 @@ jobs:
       env:
         PR_NUMBER: ${{ github.event.number }}
         PR_TITLE: ${{ github.event.pull_request.title }}
-      run: echo $PR_NUMBER && echo $PR_TITLE
+      run: ./compliance-as-code-attestors prAttest --repos {"l3montree/devguard","l3montree/devguard-web","l3montree/devguard-documentation"} --initRepoTitle $PR_TITLE --initRepoNumber $PR_NUMBER
+
+
   
 
