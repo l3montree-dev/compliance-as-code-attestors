@@ -1,24 +1,17 @@
-# Copyright (C) 2025 l3montree GmbH
-# 
-# This program is free software: you can redistribute it and/or modify
-# it under the terms of the GNU Affero General Public License as
-# published by the Free Software Foundation, either version 3 of the
-# License, or (at your option) any later version.
-# 
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU Affero General Public License for more details.
-# 
-# You should have received a copy of the GNU Affero General Public License
-# along with this program.  If not, see <https://www.gnu.org/licenses/>.
+# Build application
+FROM golang:1.25 AS builder
 
-FROM ubuntu:latest	
+WORKDIR /production-process
 
-RUN add-apt-repository ppa:longsleep/golang-backports
-RUN apt update
-RUN apt install golang-go
 COPY . .
-RUN go run main.go 
+RUN CGO_ENABLED=0 go build
 
 
+# create final image
+
+FROM gcr.io/distroless/static-debian12
+USER 1000
+WORKDIR /
+COPY --from=builder --chown=1000:1000 /production-process/compliance-as-code-attestors /app/
+
+# CMD ["/app/./compliance-as-code-attestors "]
