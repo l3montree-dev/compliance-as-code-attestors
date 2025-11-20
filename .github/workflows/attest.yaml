@@ -6,9 +6,11 @@ on:
 jobs:
   attestor: 
     runs-on: ubuntu-latest
+    container: 
+      image: ghcr.io/l3montree-dev/compliance-as-code-attestors:latest 
     steps:
       - name: pr_request
-        run: docker run ghcr.io/l3montree-dev/compliance-as-code-attestors:latest \
+        run: docker run compliance-as-code-attestors:latest \
           app/compliance-as-code-attestors prAttest \
           --repos l3montree-dev/devguard \
           --repos l3montree-dev/devguard-web \
@@ -18,8 +20,3 @@ jobs:
         env:
           PR_NUMBER: ${{ github.event.number }}
           PR_TITLE: ${{ github.event.pull_request.title }}
-
-
-
-  
-
