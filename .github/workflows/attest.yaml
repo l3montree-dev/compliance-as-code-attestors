@@ -4,14 +4,21 @@ on:
   pull_request
  
 jobs:
-  build: 
+  attestor: 
     runs-on: ubuntu-latest
     steps:
-    - name: Calling Env variables
-      env:
-        PR_NUMBER: ${{ github.event.number }}
-        PR_TITLE: ${{ github.event.pull_request.title }}
-      run: ./compliance-as-code-attestors prAttest --repos {"l3montree/devguard","l3montree/devguard-web","l3montree/devguard-documentation"} --initRepoTitle $PR_TITLE --initRepoNumber $PR_NUMBER
+      - name: pr_request
+        run: docker run ghcr.io/l3montree-dev/compliance-as-code-attestors:latest \
+          app/compliance-as-code-attestors prAttest \
+          --repos l3montree-dev/devguard \
+          --repos l3montree-dev/devguard-web \
+          --repos l3montree-dev/devguard-documentation \
+          --initRepoTitle "$PR_TITLE" \
+          --initRepoNumber "$PR_NUMBER"
+        env:
+          PR_NUMBER: ${{ github.event.number }}
+          PR_TITLE: ${{ github.event.pull_request.title }}
+
 
 
   
