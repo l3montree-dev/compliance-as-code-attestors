@@ -9,7 +9,7 @@ RUN CGO_ENABLED=0 go build
 
 # create final image
 
-FROM gcr.io/distroless/static-debian12
+FROM ubuntu:latest
 USER 1000
 WORKDIR /
 COPY --from=builder --chown=1000:1000 /production-process/compliance-as-code-attestors /app/
