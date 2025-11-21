@@ -22,8 +22,8 @@ jobs:
       - name: upload artifact
         run: actions/upload-artifact@v4
         with:
-            name: artifact_$PR_TITLE
-            path: $PR_TITLE.json
+          name: artifact_$PR_TITLE
+          path: $PR_TITLE.json
 
 # test
 
