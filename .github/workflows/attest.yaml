@@ -15,12 +15,12 @@ jobs:
             --repos l3montree-dev/devguard-web \
             --repos l3montree-dev/devguard-documentation \
             --initRepoTitle "$PR_TITLE" \
-            --initRepoNumber "$PR_NUMBER" > $PR_TITLE@.json
+            --initRepoNumber "$PR_NUMBER" > $PR_TITLE.json
         env:
           PR_NUMBER: ${{ github.event.number }}
           PR_TITLE: ${{ github.event.pull_request.title }}
       - name: upload artifact
-        run: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v4
         with:
           name: artifact_$PR_TITLE
           path: $PR_TITLE.json
