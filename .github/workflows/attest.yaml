@@ -9,13 +9,13 @@ jobs:
     container: ghcr.io/l3montree-dev/compliance-as-code-attestors:latest 
     steps:
       - name: pr_request
-        run:  app/compliance-as-code-attestors \
-          app/compliance-as-code-attestors prAttest \
-          --repos l3montree-dev/devguard \
-          --repos l3montree-dev/devguard-web \
-          --repos l3montree-dev/devguard-documentation \
-          --initRepoTitle "$PR_TITLE" \
-          --initRepoNumber "$PR_NUMBER"
+        run: |
+          /app/compliance-as-code-attestors prAttest \
+            --repos l3montree-dev/devguard \
+            --repos l3montree-dev/devguard-web \
+            --repos l3montree-dev/devguard-documentation \
+            --initRepoTitle "$PR_TITLE" \
+            --initRepoNumber "$PR_NUMBER"
         env:
           PR_NUMBER: ${{ github.event.number }}
           PR_TITLE: ${{ github.event.pull_request.title }}
