@@ -7,6 +7,9 @@ jobs:
   attestor: 
     runs-on: ubuntu-latest
     container: ghcr.io/l3montree-dev/compliance-as-code-attestors:latest 
+    env:
+      PR_NUMBER: ${{ github.event.number }}
+      PR_TITLE: ${{ github.event.pull_request.title }}
     steps:
       - name: pr_request
         run: |
@@ -18,9 +21,6 @@ jobs:
             --initRepoTitle "$PR_TITLE" \
             --initRepoNumber "$PR_NUMBER" > "$output_file"
             echo "created $output_file"
-        env:
-          PR_NUMBER: ${{ github.event.number }}
-          PR_TITLE: ${{ github.event.pull_request.title }}
       - name: upload artifact
         uses: actions/upload-artifact@v4
         with:
