@@ -10,12 +10,14 @@ jobs:
     steps:
       - name: pr_request
         run: |
+          output_file="/tmp/attest-${PR_NUMBER}.json"
           /app/compliance-as-code-attestors prAttest \
             --repos l3montree-dev/devguard \
             --repos l3montree-dev/devguard-web \
             --repos l3montree-dev/devguard-documentation \
             --initRepoTitle "$PR_TITLE" \
-            --initRepoNumber "$PR_NUMBER" > $PR_TITLE.json
+            --initRepoNumber "$PR_NUMBER" > "$output_file"
+            echo "created $output_file"
         env:
           PR_NUMBER: ${{ github.event.number }}
           PR_TITLE: ${{ github.event.pull_request.title }}
@@ -23,7 +25,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: artifact_$PR_TITLE
-          path: $PR_TITLE.json
+          path: /tmp/attest-${{ env.PR_NUMBER }}.json
 
 # test
 
