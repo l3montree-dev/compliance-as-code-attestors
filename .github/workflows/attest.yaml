@@ -20,7 +20,7 @@ jobs:
             --repos l3montree-dev/devguard-documentation \
             --initRepoTitle "$PR_TITLE" \
             --initRepoNumber "$PR_NUMBER" > "$output_file"
-            echo "created $output_file"
+            cat $output_file" && echo "created $output_file"
       - name: upload artifact
         uses: actions/upload-artifact@v4
         with:
