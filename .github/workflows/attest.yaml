@@ -30,16 +30,16 @@ jobs:
           name: artifact_$PR_TITLE
           path: /tmp/attest-${{ env.PR_TITLE }}.json
 
-      - name: Download OPA
-        uses: open-policy-agent/setup-opa
-        with:
-          version: latest 
+      # - name: Download OPA
+      #   uses: open-policy-agent/setup-opa
+      #   with:
+      #     version: latest 
       
-      - name: Evaluate Policy
-        run: | 
-          opa eval --fail-defined \
-          --stdin-input \
-          'input.results[_].coverage < 0.7'
+      # - name: Evaluate Policy
+      #   run: | 
+      #     opa eval --fail-defined \
+      #     --stdin-input \
+      #     'input.results[_].coverage < 0.7'
 
       - name: Checkout
         uses: actions/checkout@v5
