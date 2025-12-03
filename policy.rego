@@ -1,10 +1,9 @@
-package play
+package documentationMerged
 
-documentationMerged := false
+merge := false
 
 
-documentationMerged if {
+merge if {
 	input[i].repository == "l3montree-dev/devguard-documentation"
     input[i].pull_request.state == "closed"
     }
-
