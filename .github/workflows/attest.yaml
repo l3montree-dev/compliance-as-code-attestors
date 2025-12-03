@@ -36,7 +36,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: artifact_$PR_TITLE
-          path: /tmp/attest-${{ env.PR_TITLE }}.json
+          path: /tmp/attest.json
 
       - name: Download OPA
         uses: open-policy-agent/setup-opa@v2
