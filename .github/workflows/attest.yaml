@@ -48,7 +48,7 @@ jobs:
             --input "$OUTPUT_FILE" \
             'data.documentationMerged.failure_msg' \
             --format raw \
-            --fail-defined > test.txt
+            --fail-defined
 
             
 
