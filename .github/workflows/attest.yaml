@@ -39,9 +39,9 @@ jobs:
       
       - name: Evaluate Policy
         run: | 
-          opa eval --fail-defined \
-          --stdin-input \
-          'input.results[_].coverage < 0.7'
+            opa eval --data policy.rego --input /tmp/attest-${{ env.PR_TITLE }}.json --fail-defined \
+            'not data.documentationMerged.merge'
+
 
       # - name: Checkout
       #   uses: actions/checkout@v5
