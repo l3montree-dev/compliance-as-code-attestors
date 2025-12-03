@@ -31,7 +31,7 @@ jobs:
           path: /tmp/attest-${{ env.PR_TITLE }}.json
 
       - name: Download OPA
-        uses: open-policy-agent/setup-opa@2.3.0
+        uses: open-policy-agent/setup-opa@v2
         with:
           version: latest 
       
