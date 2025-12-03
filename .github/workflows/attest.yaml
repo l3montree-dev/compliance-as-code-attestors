@@ -11,6 +11,8 @@ jobs:
       PR_NUMBER: ${{ github.event.number }}
       PR_TITLE: ${{ github.event.pull_request.title }}
     steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
       - name: Env Sanity Check
         run: echo $PR_NUMBER && echo $PR_TITLE
       - name: Pull Request Check
