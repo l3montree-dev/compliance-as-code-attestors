@@ -13,11 +13,13 @@ jobs:
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
+
       - name: Env Sanity Check
         run: echo $PR_NUMBER && echo $PR_TITLE
+
       - name: Pull Request Check
         run: |
-          output_file="/tmp/attest-attest.json"
+          output_file="/tmp/attest.json"
           /app/compliance-as-code-attestors prAttest \
             --repos l3montree-dev/devguard \
             --repos l3montree-dev/devguard-web \
@@ -43,7 +45,6 @@ jobs:
       
       - name: Evaluate Policy
         run: | 
-
             echo "OUTPUT_FILE='$OUTPUT_FILE'"
             ls -l "$OUTPUT_FILE"
             opa eval --data policy.rego --input "$OUTPUT_FILE" 'data.documentationMerged.failure_msg' --format raw --fail-defined
