@@ -47,7 +47,7 @@ jobs:
         run: | 
             echo "OUTPUT_FILE='$OUTPUT_FILE'"
             ls -l "$OUTPUT_FILE"
-            opa eval --data policy.rego --input "$OUTPUT_FILE" 'data.documentationMerged.failure_msg' --format raw --fail-defined
+            opa eval --data policy.rego --input $OUTPUT_FILE 'data.documentationMerged.failure_msg' --format raw --fail-defined
 
 
       # - name: Checkout
