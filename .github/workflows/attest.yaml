@@ -30,12 +30,10 @@ jobs:
           echo "created $output_file"
 
 
-
-
       - name: upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: artifact_$PR_TITLE
+          name: artifact
           path: /tmp/attest.json
 
       - name: Download OPA
