@@ -11,7 +11,9 @@ jobs:
       PR_NUMBER: ${{ github.event.number }}
       PR_TITLE: ${{ github.event.pull_request.title }}
     steps:
-      - name: pr_request
+      - name: Env Sanity Check
+        run: echo $PR_NUMBER && echo $PR_TITLE
+      - name: Pull Request Check
         run: |
           output_file="/tmp/attest-${PR_TITLE}.json"
           /app/compliance-as-code-attestors prAttest \
