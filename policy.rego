@@ -10,4 +10,3 @@ failure_msg := msg if {
     input[i].pull_request.number,
     input[i].repository,
   ])
-}
