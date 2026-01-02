@@ -1,7 +1,7 @@
 name: Attestor Workflow
 
 on:
-  pull_request:
+  workflow_run:
     inputs:
       documentation-repo:
         type: string
@@ -9,9 +9,9 @@ on:
         description: "Write down the Documentation Repository that needs to be merged first"
 
         production-repos:
-        type: string
-        required: true
-        description: "Write down every repository that has to wait for documentation to be merged first."
+          type: string
+          required: true
+          description: "Write down every repository that has to wait for documentation to be merged first."
 
 
  
@@ -33,10 +33,11 @@ jobs:
 
       - name: Pull Request Check
         run: |
-          /app/compliance-as-code-attestors prAttest \
-            --repos 5byuri/tesing-repo \
+          /app/compliance-as-code-attestors prAttestation \
+            --repos "${{ inputs.documentation-repo }}" \
+            --repos "${{ inputs.production-repos }}" \
             --initRepoTitdle "$PR_TITLE" \
-            --initRepoNumber "$PR_NUMBER" > "$OUTPUT_FILE"
+            --pull_request_number "$PR_NUMBER" > "$OUTPUT_FILE"
           cat "$OUTPUT_FILE"
           echo "created $OUTPUT_FILE"
 
