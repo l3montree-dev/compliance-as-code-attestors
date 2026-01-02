@@ -5,6 +5,7 @@ package cmd
 
 import (
 	"fmt"
+	"strings"
 
 	"github.com/l3montree/compliance-as-code-attestors/cross_pr_request"
 	"github.com/spf13/cobra"
@@ -24,12 +25,24 @@ to quickly create a Cobra application.`,
 
 		initRepoTitle, err := cmd.Flags().GetString("initRepoTitle")
 		initRepoNumber, err := cmd.Flags().GetInt("initRepoNumber")
-		repos, err := cmd.Flags().GetStringArray("repos")
+		rawRepos, err := cmd.Flags().GetStringArray("repos")
 
 		if err != nil {
 			fmt.Print("Error")
 			return
 		}
+
+		var repos []string
+		for _, r := range rawRepos {
+			for _, repo := range strings.Split(r, ",") {
+				repo = strings.TrimSpace(repo)
+				if repo == "" {
+					continue
+				}
+				repos = append(repos, repo)
+			}
+		}
+
 		cross_pr_request.CrossPRrequest(repos, initRepoNumber, initRepoTitle)
 	},
 }
@@ -43,7 +56,7 @@ func init() {
 	// and all subcommands, e.g.:
 	prAttestCmd.Flags().Int("initRepoNumber", 3, "insert pullRequest Number here")
 	// prAttestCmd.Flags().StringArrayVar(["test"], "test", "test2")
-	prAttestCmd.Flags().StringArray("repos", []string{"l3montree-dev/devguard", "l3montree-dev/devguard-documentation"}, `{"exampleRepo1","exampleRepo2"}`)
+	prAttestCmd.Flags().StringArray("repos", []string{"l3montree-dev/devguard,l3montree-dev/devguard-documentation"}, "Comma-separated list of repositories or repeat --repos for each.")
 	prAttestCmd.Flags().String("initRepoTitle", "1277 organization wide dependency search", "Name of the Pull Request")
 
 	// Cobra supports local flags which will only run when this command

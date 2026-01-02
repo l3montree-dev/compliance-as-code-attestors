@@ -12,9 +12,7 @@ opa eval --data policy.rego --input output3.json 'data.documentationMerged.failu
 
 ```bash
 
-go run main.go prAttest --repos l3montree-dev/devguard \
-            --repos l3montree-dev/devguard-web \
-            --repos l3montree-dev/devguard-documentation \
+go run main.go prAttest --repos l3montree-dev/devguard,l3montree-dev/devguard-web,l3montree-dev/devguard-documentation \
             --initRepoTitle "1277 organization wide dependency search" \
             --initRepoNumber "8"
 
@@ -22,12 +20,9 @@ go run main.go prAttest --repos l3montree-dev/devguard \
 
 ```bash
 
-docker run compliance-as-code-attestors-1 prAttest --repos l3montree-dev/devguard \
-            --repos l3montree-dev/devguard-web \
-            --repos l3montree-dev/devguard-documentation \
+docker run compliance-as-code-attestors-1 prAttest --repos l3montree-dev/devguard,l3montree-dev/devguard-web,l3montree-dev/devguard-documentation \
             --initRepoTitle "1277 organization wide dependency search" \
             --initRepoNumber "8"
 
 ```
-
 
