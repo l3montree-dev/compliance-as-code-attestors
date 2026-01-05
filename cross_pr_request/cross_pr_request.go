@@ -26,9 +26,9 @@ import (
 )
 
 type tempInput struct {
-	repositories   []string // input the repositories you want additionally witness
-	initRepoNumber int      // entrypoint argument given by ci-cd pipeline
-	initRepoTitle  string   // entrypoint argument given by ci-cd pipeline
+	repositories        []string // input the repositories you want additionally witness
+	pull_request_number int      // entrypoint argument given by ci-cd pipeline
+	pull_request_title  string   // entrypoint argument given by ci-cd pipeline
 }
 
 type issueSummary struct {
@@ -96,7 +96,7 @@ func AssociatedPullRequest(exampleInput tempInput) {
 
 		// fmt.Printf("general : %s %d: %s\n", s.Repository, s.Number, s.Title)
 
-		if s.Title == exampleInput.initRepoTitle {
+		if s.Title == exampleInput.pull_request_title {
 			// fmt.Printf("output : %s %d: %s\n", s.Repository, s.Number, s.Title)
 
 			url := "https://api.github.com/repos/" + s.Repository + "/pulls/" + strconv.Itoa(s.Number)
@@ -141,11 +141,11 @@ func AssociatedPullRequest(exampleInput tempInput) {
 	}
 }
 
-func CrossPRrequest(repos []string, initRepoNumber int, initRepoTitle string) {
+func CrossPRrequest(repos []string, pull_request_number int, pull_request_title string) {
 	exampleInput := tempInput{
-		repositories:   repos,
-		initRepoNumber: initRepoNumber,
-		initRepoTitle:  initRepoTitle,
+		repositories:        repos,
+		pull_request_number: pull_request_number,
+		pull_request_title:  pull_request_title,
 	}
 	AssociatedPullRequest(exampleInput)
 }
