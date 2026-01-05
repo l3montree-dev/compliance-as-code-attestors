@@ -13,6 +13,7 @@ FROM ubuntu:latest
 RUN apt-get update && apt-get install -y ca-certificates && rm -rf /var/lib/apt/lists/*
 WORKDIR /
 COPY --from=builder /app/compliance-as-code-attestors/compliance-as-code-attestor /usr/local/bin/compliance-as-code-attestor
+COPY --from=builder /app/compliance-as-code-attestors/policy.rego /policy.rego
 RUN chmod +x /usr/local/bin/compliance-as-code-attestor
 
 # ENTRYPOINT ["/usr/local/bin/compliance-as-code-attestor"]
