@@ -33,7 +33,7 @@ jobs:
 
       - name: Pull Request Check
         run: |
-          /app/compliance-as-code-attestors prAttestation \
+          /usr/local/bin/compliance-as-code-attestor prAttestation \
             --repos "${{ inputs.documentation-repo }}" \
             --repos "${{ inputs.production-repos }}" \
             --pull_request_title "$PR_TITLE" \
@@ -60,3 +60,4 @@ jobs:
             'data.documentationMerged.failure_msg' \
             --format  raw \
             --fail-defined
+ 

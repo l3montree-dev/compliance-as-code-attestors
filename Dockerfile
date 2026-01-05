@@ -15,4 +15,4 @@ WORKDIR /
 COPY --from=builder /app/compliance-as-code-attestors/compliance-as-code-attestor /usr/local/bin/compliance-as-code-attestor
 RUN chmod +x /usr/local/bin/compliance-as-code-attestor
 
-ENTRYPOINT ["/usr/local/bin/compliance-as-code-attestor"]
+# ENTRYPOINT ["/usr/local/bin/compliance-as-code-attestor"]
