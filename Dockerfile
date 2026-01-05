@@ -10,7 +10,7 @@ RUN CGO_ENABLED=0 go build -o compliance-as-code-attestor
 # create final image
 
 FROM ubuntu:latest
-RUN apt-get update && apt-get install -y ca-certificates && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y ca-certificates && rm -rf /var/lib/apt/lists/* && curl
 WORKDIR /
 COPY --from=builder /app/compliance-as-code-attestors/compliance-as-code-attestor /usr/local/bin/compliance-as-code-attestor
 COPY --from=builder /app/compliance-as-code-attestors/policy.rego /policy.rego
