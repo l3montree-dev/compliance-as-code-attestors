@@ -31,6 +31,13 @@ jobs:
       - name: Env Sanity Check
         run: echo $PR_NUMBER && echo $PR_TITLE
 
+      - name: Debug binary
+        run: |
+          ls -la /usr/local/bin
+          which compliance-as-code-attestor || true
+          /usr/local/bin/compliance-as-code-attestor --help || true
+
+
       - name: Pull Request Check
         run: |
           /usr/local/bin/compliance-as-code-attestor prAttestation \
